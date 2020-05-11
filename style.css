@@ -1,0 +1,15 @@
+body {
+    font-family: "ChaseRegular", sans-serif;
+    background: rgb(186, 182, 182);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+canvas {
+    margin: 0 auto;
+    padding: 0;
+}

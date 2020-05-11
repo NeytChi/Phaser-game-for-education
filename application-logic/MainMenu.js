@@ -13,55 +13,54 @@ Game.MainMenu.prototype = {
 	create: function (game) {
 
 
-		titlescreen = game.add.sprite( game.world.centerX, game.world.centerY-100, 'titlescreen');
+		titlescreen = game.add.sprite(game.world.centerX, game.world.centerY - 100, 'titlescreen');
 
-		titlescreen.anchor.setTo(0.5,0.5);
+		titlescreen.anchor.setTo(0.5, 0.5);
 
 		group = this.add.group();
 		//  This will automatically inputEnable all children added to both Groups
-    	group.inputEnableChildren = true;
+		group.inputEnableChildren = true;
 
-		var PlayButton = this.createButton(game, "Play", game.world.centerX,game.world.centerY + 130, 300, 50,'button',
-			function(){
+		var PlayButton = this.createButton(game, "Play", game.world.centerX, game.world.centerY + 130, 300, 50, 'button',
+			function () {
 				this.state.start('ChoiceLevel');
 			});
-		var OptionButton =this.createButton(game, "Option", game.world.centerX, game.world.centerY + 180, 300, 50,'button',
-			function(){
+		var OptionButton = this.createButton(game, "Option", game.world.centerX, game.world.centerY + 180, 300, 50, 'button',
+			function () {
 				this.state.start('Options');
 			});
-		var ExitButton =this.createButton(game, "Exit", game.world.centerX, game.world.centerY + 230, 300, 50,'button',
-			function(){
+		var ExitButton = this.createButton(game, "Exit", game.world.centerX, game.world.centerY + 230, 300, 50, 'button',
+			function () {
 				window.open("exit.html");
 			});
 
-		
-		
+
 	},
 
-	update:function(game){
-		 
+	update: function (game) {
+
 	},
 
-	onDown: function(button) {
-    	button.tint = 0x8b1fde;
+	onDown: function (button) {
+		button.tint = 0x8b1fde;
 	},
 
-	onOver: function(button) {
-    	button.tint = 0xa8a7a8;
+	onOver: function (button) {
+		button.tint = 0xa8a7a8;
 	},
 
-	onOut: function(button) {
-    	button.tint = 0xffffff;
+	onOut: function (button) {
+		button.tint = 0xffffff;
 	},
 
 	flash: function () {
-        this.camera.flash(0xa8a7a8, 1500);
-    },
+		this.camera.flash(0xa8a7a8, 1500);
+	},
 
-	createButton:function(game, string, x, y, w, h, stringPic, callback){
+	createButton: function (game, string, x, y, w, h, stringPic, callback) {
 		var button1 = game.add.button(x, y, stringPic, callback, this, 2, 1, 0);
 
-		button1.anchor.setTo(0.5,0.5);
+		button1.anchor.setTo(0.5, 0.5);
 		button1.wigth = w;
 		button1.height = h;
 
@@ -69,15 +68,15 @@ Game.MainMenu.prototype = {
 
 		group.onChildInputDown.add(this.onDown, this);
 
-    	group.onChildInputOver.add(this.onOver, this);
+		group.onChildInputOver.add(this.onOver, this);
 
-    	group.onChildInputOut.add(this.onOut, this);
+		group.onChildInputOut.add(this.onOut, this);
 
-		var txt = game.add.text(button1.x, button1.y, string,{
+		var txt = game.add.text(button1.x, button1.y, string, {
 			font: "14px Arial",
 			fill: "#fff",
 			align: "center"
-			});
-		txt.anchor.setTo(0.5,0.5);
+		});
+		txt.anchor.setTo(0.5, 0.5);
 	}
 };

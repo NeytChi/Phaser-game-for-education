@@ -5,52 +5,32 @@
     <meta charset="UTF-8">
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
 
-    <script type="text/javascript" src="js/phaser.js"></script>
-    <script type="text/javascript" src="js/Boot.js"></script>
-    <script type="text/javascript" src="js/MainMenu.js"></script>
-    <script type="text/javascript" src="js/ChoiceLevel.js"></script>
-    <script type="text/javascript" src="js/Preloader.js"></script>
-    <script type="text/javascript" src="js/Level1.js"></script>
-    <script type="text/javascript" src="js/Level2.js"></script>
-    <script type="text/javascript" src="js/Level3.js"></script>
-    <script type="text/javascript" src="js/Level4.js"></script>
+    <script type="text/javascript" src="application-logic/phaser.js"></script>
+    <script type="text/javascript" src="application-logic/Boot.js"></script>
+    <script type="text/javascript" src="application-logic/MainMenu.js"></script>
+    <script type="text/javascript" src="application-logic/ChoiceLevel.js"></script>
+    <script type="text/javascript" src="application-logic/Preloader.js"></script>
+    <script type="text/javascript" src="application-logic/Level1.js"></script>
+    <script type="text/javascript" src="application-logic/Level2.js"></script>
+    <script type="text/javascript" src="application-logic/Level3.js"></script>
+    <script type="text/javascript" src="application-logic/Level4.js"></script>
 
-
-
-
-    <style type="text/css">
-        body{
-            font-family: "ChaseRegular", sans-serif;
-            background: rgb(186, 182, 182);
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        canvas{
-            margin: 0 auto;
-            padding: 0;
-        }
-       
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <script type="text/javascript">
-        window.onload = function(){
-            var game = new Phaser.Game(800, 600, Phaser.CANVAS,'');
+        window.onload = function() {
+            var game = new Phaser.Game(800, 600, Phaser.CANVAS, '');
 
-            game.state.add('Boot',Game.Boot);
-            game.state.add('Preloader',Game.Preloader);
-            game.state.add('MainMenu',Game.MainMenu);
+            game.state.add('Boot', Game.Boot);
+            game.state.add('Preloader', Game.Preloader);
+            game.state.add('MainMenu', Game.MainMenu);
             game.state.add('ChoiceLevel', Game.ChoiceLevel);
             game.state.add('Level1', Game.Level1);
             game.state.add('Level2', Game.Level2);
             game.state.add('Level3', Game.Level3);
             game.state.add('Level4', Game.Level4);
-            
+
             game.state.start('Preloader');
 
         }

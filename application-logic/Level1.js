@@ -1,64 +1,63 @@
 Game.Level1 = function(game) {
-
-
+    
 };
 
-var player1;
-var player;
-var fireButton;
-var activateButton;
-var attackState = false;
-var swordCourse = true;
-var emitter;
-var facing = 'left';
-var RLPlayer;
-var jumpTimer = 0;
-var jumpButton;
-var sword;
-var damage;
-var scenarioText;
+let player1;
+let player;
+let fireButton;
+let activateButton;
+let attackState = false;
+const swordCourse = true;
+let emitter;
+let facing = 'left';
+let RLPlayer;
+let jumpTimer = 0;
+let jumpButton;
+let sword;
+let damage;
+let scenarioText;
 
-var map;
-var tileset;
-var layer;
-var cursors;
-var bg;
-var angleSword = 0;
+let map;
+let tileset;
+let layer;
+let cursors;
+let bg;
+const angleSword = 0;
 
-var stopEmitterDeath = false;
-var aliveEnemy = true;
-var hp =100;
+const stopEmitterDeath = false;
+const aliveEnemy = true;
+const hp = 100;
 
-var tweenLength;
-var tweenTime;
-var xBorn;
-var yBorn;
-var RLways;
-
-
-var hitted =false;
-var ninjis;
-var trees;
-var manybats;
-var totems;
-var lezos;
-var jumpers;
-var golds;
+let tweenLength;
+let tweenTime;
+let xBorn;
+let yBorn;
+let RLways;
 
 
-var checkPointers;
-var activateState = false;
-var xCoordinateComeback = 0;
-var yCoordinateComeback = 0;
+const hitted = false;
+let ninjis;
+let trees;
+let manybats;
+let totems;
+let lezos;
+let jumpers;
+let golds;
 
-var scoreString;
-var scoreText;
+
+let checkPointers;
+const activateState = false;
+let xCoordinateComeback = 0;
+let yCoordinateComeback = 0;
+
+let scoreString;
+let scoreText;
 
 
 Game.Level1.prototype = {
 
 
-    preload: function(){
+    preload: function () {
 
         this.load.spritesheet('swords', 'assets/games/starstruck/katanaSprite3.png', 70, 20);
 
@@ -66,24 +65,22 @@ Game.Level1.prototype = {
 
         this.load.image('background', 'assets/images/Map2.png');
 
-        this.load.image('ground', 'assets/games/starstruck/Ground.png');    
+        this.load.image('ground', 'assets/games/starstruck/Ground.png');
 
-        this.load.image('tiled', 'assets/games/starstruck/tiled.png');  
-        
+        this.load.image('tiled', 'assets/games/starstruck/tiled.png');
+
         this.load.spritesheet('s0', 'assets/games/starstruck/s0.png', 29, 34);
 
     },
-      
-    create: function() {
 
-        // <Внешний мир>
+    create: function () {
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.stage.backgroundColor = '#000000';
 
         bg = this.add.tileSprite(0, 0, 1600, 1200, 'background');
-        bg.scale.setTo(0.5,0.5);
+        bg.scale.setTo(0.5, 0.5);
         bg.fixedToCamera = true;
 
         map = this.add.tilemap('level1');
@@ -102,12 +99,11 @@ Game.Level1.prototype = {
         layer.resizeWorld();
 
         this.physics.arcade.gravity.y = 250;
-        //<Emmiter>
         emitter = this.add.emitter(0, 0, 200);
 
         emitter.makeParticles('chunk');
-        emitter.minParticleScale =0.1;
-        emitter.maxParticleScale =1.5;
+        emitter.minParticleScale = 0.1;
+        emitter.maxParticleScale = 1.5;
         emitter.minRotation = 0;
         emitter.maxRotation = 0;
         emitter.gravity = 150;
@@ -118,24 +114,24 @@ Game.Level1.prototype = {
         emitterDeath1 = this.add.emitter(0, 0, 400);
 
         emitterDeath1.makeParticles('chunkDeath1');
-        emitterDeath1.minParticleScale =0.09;
-        emitterDeath1.maxParticleScale =2;
+        emitterDeath1.minParticleScale = 0.09;
+        emitterDeath1.maxParticleScale = 2;
         emitterDeath1.minRotation = 0;
         emitterDeath1.maxRotation = 360;
 
         emitterDeath2 = this.add.emitter(0, 0, 200);
 
         emitterDeath2.makeParticles('chunkDeath2');
-        emitterDeath2.minParticleScale =0.09;
-        emitterDeath2.maxParticleScale =2;
+        emitterDeath2.minParticleScale = 0.09;
+        emitterDeath2.maxParticleScale = 2;
         emitterDeath2.minRotation = 0;
         emitterDeath2.maxRotation = 360;
-      
+
         //</Emmiter>
 
         // </Внешний мир>
 
-        var sword1 = new Sword(this, xCoordinateComeback, yCoordinateComeback);
+        const sword1 = new Sword(this, xCoordinateComeback, yCoordinateComeback);
 
         checkPointers = this.add.group();
 
@@ -147,8 +143,8 @@ Game.Level1.prototype = {
         yCoordinateComeback = 200;
 
         player1 = new Player(this, xCoordinateComeback, yCoordinateComeback);
-        
-        new Plot(this,200,410,'s0');
+
+        new Plot(this, 200, 410, 's0');
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -164,11 +160,11 @@ Game.Level1.prototype = {
         lezos = this.add.group();
         this.createLezo(this);
 
-        golds = this.add.group();;
+        golds = this.add.group();
 
         //  The score
         scoreString = 'Score : ';
-        scoreText = this.add.text(10, 10, scoreString + player.points, { font: '44px Arial', fill: "#9802d4" });
+        scoreText = this.add.text(10, 10, scoreString + player.points, {font: '44px Arial', fill: "#9802d4"});
         scoreText.fixedToCamera = true;
         scoreText.fontWeight = 'bold';
 
@@ -176,7 +172,7 @@ Game.Level1.prototype = {
         activateButton = this.input.keyboard.addKey(Phaser.KeyCode.E);
     },
 
-    update: function() {
+    update: function () {
 
         this.physics.arcade.collide(player, layer);
 
@@ -192,22 +188,22 @@ Game.Level1.prototype = {
 
 
         //<Оружие>
-        if (attackState == true){
+        if (attackState === true) {
 
             this.physics.arcade.overlap(sword, ninjis, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, trees,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, trees, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, manybats,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, manybats, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, totems,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, totems, collisionHandlerSword, null, this);
 
             attackState = false;
 
         }
 
         //<Оружие>
-        
+
         // Коллизии
 
         this.physics.arcade.overlap(trees, player, this.resetPlayer, null, this);
@@ -218,19 +214,19 @@ Game.Level1.prototype = {
 
         this.physics.arcade.overlap(player, checkPointers, this.checkPointerActivate, null, this);
 
-        this.physics.arcade.overlap(lezos, player, this.resetPlayer, null, this);     
-        
+        this.physics.arcade.overlap(lezos, player, this.resetPlayer, null, this);
+
         //\Коллизии 
 
-        scoreText.setText(scoreString+player.points);
+        scoreText.setText(scoreString + player.points);
     },
 
-    render: function(){
+    render: function () {
 
         this.debug.inputInfo(32, 32);
 
     },
-    checkPointerActivate: function(player, checkPointer){
+    checkPointerActivate: function (player, checkPointer) {
 
         xCoordinateComeback = checkPointer.xBorn;
         yCoordinateComeback = checkPointer.yBorn;
@@ -238,14 +234,14 @@ Game.Level1.prototype = {
 
     },
 
-    particleBurst: function() {
+    particleBurst: function () {
 
         emitter.x = sword.x;
         emitter.y = sword.y;
         emitter.start(true, 1000, null, 1);
 
     },
-    particleDeath: function(enemy) {
+    particleDeath: function (enemy) {
 
         emitterDeath2.x = enemy.x;
         emitterDeath2.y = enemy.y;
@@ -254,7 +250,7 @@ Game.Level1.prototype = {
         emitterDeath2.start(true, 2000, null, 5);
         emitterDeath1.start(true, 2000, null, 5);
 
-        new Gold(this,enemy.x,enemy.y);
+        new Gold(this, enemy.x, enemy.y);
         enemy.kill();
     },
 
@@ -262,13 +258,13 @@ Game.Level1.prototype = {
         this.camera.flash(0xff0000, 500);
     },
 
-    resetPlayer: function(player,  ninjis){
+    resetPlayer: function (player, ninjis) {
         this.flash();
         player.points = 0;
         sword.reset(xCoordinateComeback, yCoordinateComeback);
         player.reset(xCoordinateComeback, yCoordinateComeback);
         reviveSword();
-        reviveNinjis(this);
+        reviveNinjas(this);
         reviveTrees(this);
         reviveBats(this);
         reviveTotems(this);
@@ -279,208 +275,173 @@ Game.Level1.prototype = {
         // this.debug.body(player);
         // this.debug.bodyInfo(player, 16, 24);
 
-        },
+    },
     createNinjis: function () {
 
-    new EnemyNinja(0, this, 864, 425, 270,3000);
-    new EnemyNinja(1, this, 1325, 425, 150,2000);
-    new EnemyNinja(2, this, 1312, 260, 100, 2000);
-    new EnemyNinja(3, this, 1568, 200, 300, 3000);
-    new EnemyNinja(4, this, 1600, 440, 300, 3000);
-    new EnemyNinja(5, this, 2150, 440, 500,5000);
-    new EnemyNinja(6, this, 2190, 280, 370,5000);
-    new EnemyNinja(7, this, 2570, 182, 100, 1000);
-    new EnemyNinja(8, this, 2270, 135, 170,2000);
-    
+        new EnemyNinja(0, this, 864, 425, 270, 3000);
+        new EnemyNinja(1, this, 1325, 425, 150, 2000);
+        new EnemyNinja(2, this, 1312, 260, 100, 2000);
+        new EnemyNinja(3, this, 1568, 200, 300, 3000);
+        new EnemyNinja(4, this, 1600, 440, 300, 3000);
+        new EnemyNinja(5, this, 2150, 440, 500, 5000);
+        new EnemyNinja(6, this, 2190, 280, 370, 5000);
+        new EnemyNinja(7, this, 2570, 182, 100, 1000);
+        new EnemyNinja(8, this, 2270, 135, 170, 2000);
+
     },
     createTrees: function () {
 
-    new EnemyTree(0, this, 1050, 350);
-    new EnemyTree(2, this, 1950, 350);
-    
+        new EnemyTree(0, this, 1050, 350);
+        new EnemyTree(2, this, 1950, 350);
+
     },
 
     createBats: function () {
 
-    new EnemyBat(0, this, 1280, 48);
-    new EnemyBat(2, this, 2560, 48);
-    
+        new EnemyBat(0, this, 1280, 48);
+        new EnemyBat(2, this, 2560, 48);
+
     },
 
     createTotems: function () {
 
-    new EnemyTotem(0, this, 1728, 190);
-    new EnemyTotem(1, this, 1970, 110);
-    new EnemyTotem(2, this, 2370, 266);
-    
+        new EnemyTotem(0, this, 1728, 190);
+        new EnemyTotem(1, this, 1970, 110);
+        new EnemyTotem(2, this, 2370, 266);
+
     },
 
     createLezo: function () {
 
-    new Lezo(0, this, 1130, 432);
-    new Lezo(1, this, 1580, 448);
-    new Lezo(2, this, 2000, 96);
-    new Lezo(2, this, 2000, 128);; 
+        new Lezo(0, this, 1130, 432);
+        new Lezo(1, this, 1580, 448);
+        new Lezo(2, this, 2000, 96);
+        new Lezo(2, this, 2000, 128);
     },
 
     createJumper: function () {
-    
+
     }
 };
+Player = function(game,x,y) {
+    player = game.add.sprite(x, y, 'dude');
+    player.RLPlayer = true;
+    player.points = 0;
+    game.physics.enable(player, Phaser.Physics.ARCADE);
+    player.body.bounce.y = 0.2;
+    player.body.collideWorldBounds = true;
+    player.animations.add('left', [0, 1, 2, 3], 15, true);
+    player.animations.add('turn', [1], 20, true);
+    player.animations.add('right', [4, 5, 6, 7], 15, true);
+    player.animations.add('idleLeft', [8, 9, 10], 7, true);
+    player.animations.add('idleRight', [12, 13, 14], 7, true);
 
+    player.anchor.setTo(0.5, 0.5);
+    game.camera.follow(player);
 
+    player.update = function () {
 
-Player = function(game,x,y){
-         //<Игрок>
-        player = game.add.sprite(x, y, 'dude');
-        player.RLPlayer=true;
-        player.points = 0;
-        game.physics.enable(player, Phaser.Physics.ARCADE);
-        player.body.bounce.y = 0.2;
-        player.body.collideWorldBounds = true;
-        player.animations.add('left', [0, 1, 2, 3], 15, true);
-        player.animations.add('turn', [1], 20, true);
-        player.animations.add('right', [4, 5, 6, 7], 15, true);
-        player.animations.add('idleLeft', [8, 9, 10], 7, true);
-        player.animations.add('idleRight', [12,13,14], 7, true);
-        
-        player.anchor.setTo(0.5,0.5);
-        game.camera.follow(player);
-        //</Игрок>
+        player.body.velocity.x = 0;
 
-        player.update = function(){
+        if (cursors.left.isDown) {
+            player.body.velocity.x = -150;
+            game.particleBurst();
+            RLPlayer = true;
+            if (facing !== 'left') {
+                player.animations.play('left');
+                facing = 'left';
 
-                //<Интерфейс плейера>
+            }
 
-                player.body.velocity.x = 0;
-                
-                if (cursors.left.isDown)
-                {
-                    player.body.velocity.x = -150;
-                    game.particleBurst();
-                    RLPlayer =true;
-                    //sword.anchor.setTo(0.4,0.5);
-                    //sword.frame = 1;
-                    if (facing != 'left')
-                    {
-                        player.animations.play('left');
-                        facing = 'left'; 
-                        
-                    }
-                    
+        } else if (cursors.right.isDown) {
+            player.body.velocity.x = 150;
+            game.particleBurst();
+            RLPlayer = false;
+            if (facing !== 'right') {
+                player.animations.play('right');
+                facing = 'right';
+            }
+
+        } else {
+            if (facing !== 'idle') {
+                player.animations.stop();
+                if (facing === 'left') {
+                    player.animations.play('idleLeft');
+                } else {
+                    player.animations.play('idleRight');
                 }
-
-                else if (cursors.right.isDown)
-                {
-                    player.body.velocity.x = 150;
-                    game.particleBurst();
-                    RLPlayer = false;
-                    //sword.anchor.setTo(0.6,0.5);
-                    //sword.frame = 0;
-                    if (facing != 'right')
-                    {
-                        player.animations.play('right');
-                        facing = 'right';
-                    }
-                    
-                }
-                else
-                {
-                    if (facing != 'idle')
-                    {
-                        player.animations.stop();
-                        if (facing == 'left')
-                        {
-                            player.animations.play('idleLeft');
-                        }
-                        else
-                        {
-                            player.animations.play('idleRight');
-                        }
-                        facing = 'idle';
-                    }
-                }
-                if (fireButton.isDown)
-                {
-                    attackState = true;
-                    console.log('attackState');
-                }
-
-                if (cursors.up.isDown && player.body.onFloor() && game.time.now > jumpTimer)
-                {
-                    player.body.velocity.y = -250;
-                    jumpTimer = game.time.now + 200;
-                }
-               
-                //</Интерфейс плейера>
+                facing = 'idle';
+            }
         }
-        player.bigJump = function(){
-        
-                player.body.velocity.y = -250;
-                jumpTimer = game.time.now + 200;
-        
+        if (fireButton.isDown) {
+            attackState = true;
+            console.log('attackState');
         }
+
+        if (cursors.up.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
+            player.body.velocity.y = -250;
+            jumpTimer = game.time.now + 200;
+        }
+    }
+    player.bigJump = function () {
+
+        player.body.velocity.y = -250;
+        jumpTimer = game.time.now + 200;
+
+    }
 };
-Sword = function (game,x,y){
+Sword = function (game,x,y) {
 
-        //<Оружие>
+    sword = game.add.sprite(x, y, 'swords');
+    damage = 5;
 
-        sword = game.add.sprite( x, y, 'swords');
-        //sword.width=5;
-        //sword.height=70;
-        //sword.scale.setTo(0.08,0.08);
-        damage = 5;
+    game.physics.enable(sword, Phaser.Physics.ARCADE);
+    sword.enableBody = true;
+    sword.body.collideWorldBounds = true;
+    sword.body.allowGravity = false;
+    sword.animations.add('left', [3, 5, 7], 10, true);
+    sword.animations.add('right', [2, 4, 6], 10, true);
+    sword.body.velocity.x = 0;
+    sword.body.velocity.y = 0;
+    game.camera.SHAKE_HORIZONTAL = true;
 
-        game.physics.enable(sword, Phaser.Physics.ARCADE);
-        sword.enableBody = true;
-        sword.body.collideWorldBounds = true;
-        sword.body.allowGravity = false;
-        sword.animations.add('left', [3,5,7], 10, true);
-        sword.animations.add('right', [2,4,6], 10, true);
-        sword.body.velocity.x = 0;
-        sword.body.velocity.y = 0;
-        game.camera.SHAKE_HORIZONTAL = true;
+    sword.update = function () {
 
-        sword.update = function(){
+        game.physics.arcade.moveToXY(sword, player.x, player.y, 100, 100);
 
-            game.physics.arcade.moveToXY(sword, player.x, player.y , 100, 100);
+        if (attackState === true) {
+            game.camera.shake(0.0005, 30);
+            if (RLPlayer === true) {
+                sword.anchor.setTo(0.9, 0.5);
+                sword.animations.play('right');
 
-            if (attackState == true){
-                game.camera.shake(0.0005, 30);
-                if(RLPlayer==true){
-                    sword.anchor.setTo(0.9,0.5);
-                    sword.animations.play('right');
-
-                }
-                else{
-                    sword.anchor.setTo(0.1,0.5);
-                    sword.animations.play('left');
-                }
+            } else {
+                sword.anchor.setTo(0.1, 0.5);
+                sword.animations.play('left');
             }
-            else {
-                if(RLPlayer==true){
-                    sword.anchor.setTo(0.2,0.5);
-                    sword.frame = 1;
-                }
-                else{
-                    sword.anchor.setTo(0.8,0.5);
-                    sword.frame = 0;
-                }
-                sword.animations.stop();
+        } else {
+            if (RLPlayer === true) {
+                sword.anchor.setTo(0.2, 0.5);
+                sword.frame = 1;
+            } else {
+                sword.anchor.setTo(0.8, 0.5);
+                sword.frame = 0;
             }
-
+            sword.animations.stop();
         }
-    };
-CheckPointer = function (index,game,x,y){
 
-    var checkPointer = checkPointers.create(x, y, 'checkPointer');
+    }
+};
+CheckPointer = function (index,game,x,y) {
+
+    const checkPointer = checkPointers.create(x, y, 'checkPointer');
     checkPointer.xBorn = x;
     checkPointer.yBorn = y;
     checkPointer.activateState = activateState;
     checkPointer.enableBody = true;
-    checkPointer.anchor.setTo(0.5,0.5);
+    checkPointer.anchor.setTo(0.5, 0.5);
     checkPointer.animations.add('no-activate', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
-    var activate = checkPointer.animations.add('activate', [8, 9, 10, 11, 12, 13], 15, false);
+    const activate = checkPointer.animations.add('activate', [8, 9, 10, 11, 12, 13], 15, false);
     checkPointer.name = index.toString();
     game.physics.enable(checkPointer, Phaser.Physics.ARCADE);
     checkPointer.body.bounce.y = 0.2;
@@ -489,39 +450,41 @@ CheckPointer = function (index,game,x,y){
     checkPointer.body.allowGravity = false;
     checkPointer.animations.play('no-activate');
 
-    checkPointer.update = function(){
+    checkPointer.update = function () {
 
-        if (checkPointer.activateState==true){
-            if (activate.isFinished){
-            checkPointer.frame = 13;
+        if (checkPointer.activateState === true) {
+            if (activate.isFinished) {
+                checkPointer.frame = 13;
+            } else {
+                checkPointer.animations.play('activate');
             }
-            else{
-            checkPointer.animations.play('activate');}
         }
     }
 };
-Ends = function (game,x,y,callback){
+Ends = function (game,x,y,callback) {
 
-    var end = game.add.sprite(x, y, 'end');
+    const end = game.add.sprite(x, y, 'end');
     end.xBorn = x;
     end.yBorn = y;
     end.enableBody = true;
-    end.anchor.setTo(0.5,0.5);
+    end.anchor.setTo(0.5, 0.5);
     game.physics.enable(end, Phaser.Physics.ARCADE);
     end.body.bounce.y = 0.2;
     end.body.immovable = true;
     end.body.collideWorldBounds = true;
     end.body.allowGravity = false;
 
-    end.update = function(){
+    end.update = function () {
 
-        if(activateButton.isDown){game.physics.arcade.overlap(end, player, callback, null, game);}
-        
+        if (activateButton.isDown) {
+            game.physics.arcade.overlap(end, player, callback, null, game);
+        }
+
     }
 };
-Gold = function (game,x,y){
+Gold = function (game,x,y) {
 
-    var gold = game.add.sprite(x, y, 'gold');
+    const gold = game.add.sprite(x, y, 'gold');
     golds.add(gold);
     gold.xBorn = x;
     gold.yBorn = y;
@@ -548,8 +511,8 @@ Gold = function (game,x,y){
 };
 Lezo = function (index,game,x,y){
 
-        var lezo = lezos.create(x, y, 'lezo');
-        lezo.xBorn = x;
+    const lezo = lezos.create(x, y, 'lezo');
+    lezo.xBorn = x;
         lezo.yBorn = y;
         lezo.activateState = activateState;
         lezo.enableBody = true;
@@ -567,8 +530,8 @@ Lezo = function (index,game,x,y){
     };
 Jumper = function (index,game,x,y){
 
-        var jumper = jumpers.create(x, y, 'jumper');
-        jumper.xBorn = x;
+    const jumper = jumpers.create(x, y, 'jumper');
+    jumper.xBorn = x;
         jumper.yBorn = y;
         jumper.activateState = activateState;
         jumper.enableBody = true;
@@ -594,7 +557,7 @@ Jumper = function (index,game,x,y){
     };
 EnemyTotem = function (index,game,x,y){
 
-    var totem = totems.create( x, y, 'enemyTotem');
+    const totem = totems.create(x, y, 'enemyTotem');
     totem.stateON = false;
     totem.hitted = hitted;
     totem.hp = 200;
@@ -615,7 +578,7 @@ EnemyTotem = function (index,game,x,y){
 
 
     //<Выстрел>            
-    var weapon1 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
+    const weapon1 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
     weapon1.bulletKillType = Phaser.Weapon.KILL_DISTANCE ;//  The bullet will be automatically killed when it leaves the world bounds
     weapon1.bulletSpeed = 500;//  The speed at which the bullet is fired
     weapon1.fireRate = 4000; //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
@@ -626,7 +589,7 @@ EnemyTotem = function (index,game,x,y){
     //  But the 'true' argument tells the weapon to track sprite rotation
     weapon1.trackSprite(totem, -18, -10, false);
 
-    var weapon2 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
+    const weapon2 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
     weapon2.bulletKillType = Phaser.Weapon.KILL_DISTANCE ;//  The bullet will be automatically killed when it leaves the world bounds
     weapon2.bulletSpeed = 500;//  The speed at which the bullet is fired
     weapon2.fireRate = 4000; //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
@@ -637,7 +600,7 @@ EnemyTotem = function (index,game,x,y){
     //  But the 'true' argument tells the weapon to track sprite rotation
     weapon2.trackSprite(totem, -18, -10, false);
 
-    var weapon3 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
+    const weapon3 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
     weapon3.bulletKillType = Phaser.Weapon.KILL_DISTANCE ;//  The bullet will be automatically killed when it leaves the world bounds
     weapon3.bulletSpeed = 500;//  The speed at which the bullet is fired
     weapon3.fireRate = 4000; //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
@@ -648,7 +611,7 @@ EnemyTotem = function (index,game,x,y){
     //  But the 'true' argument tells the weapon to track sprite rotation
     weapon3.trackSprite(totem, -18, -10, false);
 
-    var weapon4 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
+    const weapon4 = game.add.weapon(30, 'bullet');//  Creates 30 bullets, using the 'chunk1' graphic
     weapon4.bulletKillType = Phaser.Weapon.KILL_DISTANCE ;//  The bullet will be automatically killed when it leaves the world bounds
     weapon4.bulletSpeed = 500;//  The speed at which the bullet is fired
     weapon4.fireRate = 4000; //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
@@ -670,16 +633,16 @@ EnemyTotem = function (index,game,x,y){
         }
         
 
-        ;
+        
 
-        if( totem.frame == 0){
+        if( totem.frame === 0){
             totem.stateON=true;
             weapon1.fire();
             weapon2.fire();
             weapon3.fire();
             weapon4.fire();
         }
-        if( totem.frame == 1){
+        if( totem.frame === 1){
             totem.stateON=false;
         }
 
@@ -693,7 +656,7 @@ EnemyTotem = function (index,game,x,y){
 
 
         
-        if (totem.aliveEnemy==false){
+        if (totem.aliveEnemy===false){
             totem.aliveEnemy=true;
             game.particleDeath(totem);
             totem.destroy();
@@ -702,10 +665,10 @@ EnemyTotem = function (index,game,x,y){
             weapon3.killAll();
             weapon4.killAll();
         }
-        if(totem.hp==0){
+        if(totem.hp===0){
             totem.aliveEnemy=false;
         }
-        if(totem.hitted==true && totem.stateON==true){
+        if(totem.hitted===true && totem.stateON===true){
             totem.hp = totem.hp-damage;
             totem.tint = 0xff0000;
             totem.hitted=false;
@@ -715,8 +678,8 @@ EnemyTotem = function (index,game,x,y){
 };
 EnemyNinja = function (index,game,x,y,tweenLength,tweenTime){
 
-        var ninja = ninjis.create( x, y, 'enemyNinja');
-        ninja.hitted = hitted;
+    const ninja = ninjis.create(x, y, 'enemyNinja');
+    ninja.hitted = hitted;
         ninja.hp = 50;
         ninja.aliveEnemy = aliveEnemy;
         ninja.RLways = true;
@@ -739,28 +702,28 @@ EnemyNinja = function (index,game,x,y,tweenLength,tweenTime){
         ninja.update = function(){
             if (ninja.x === ninja.xBorn) {
                 ninja.RLways = true;
-                var enemyNinjaTweenR = game.add.tween(ninja).to({
-                x: ninja.x + ninja.tweenLength
+                const enemyNinjaTweenR = game.add.tween(ninja).to({
+                    x: ninja.x + ninja.tweenLength
                 }, tweenTime, Phaser.Easing.Linear.None, true);
                 ninja.animations.play('ninjaRight');
             }
             ninja.tint = 0xFFFFFF;
             if (ninja.x === ninja.xBorn + ninja.tweenLength){
                 ninja.RLways = false;
-                var enemyNinjaTweenL = game.add.tween(ninja).to({
-                x: ninja.x - ninja.tweenLength
+                const enemyNinjaTweenL = game.add.tween(ninja).to({
+                    x: ninja.x - ninja.tweenLength
                 }, tweenTime, Phaser.Easing.Linear.None, true);
                 ninja.animations.play('ninjaLeft');
             }
-            if (ninja.aliveEnemy==false){
+            if (ninja.aliveEnemy===false){
                 ninja.aliveEnemy=true;
                 game.particleDeath(ninja);
                 ninja.destroy();
             }
-            if(ninja.hp==0){
+            if(ninja.hp===0){
                 ninja.aliveEnemy=false;
             }
-            if(ninja.hitted==true){
+            if(ninja.hitted===true){
                 ninja.hp = ninja.hp-damage;
                 ninja.tint = 0xff0000;
                 ninja.hitted=false;
@@ -770,8 +733,8 @@ EnemyNinja = function (index,game,x,y,tweenLength,tweenTime){
 
 EnemyTree = function (index,game,x,y){
 
-        var tree = trees.create( x, y, 'enemyTree');
-        tree.hitted = hitted;
+    const tree = trees.create(x, y, 'enemyTree');
+    tree.hitted = hitted;
         tree.hp = 300;
         tree.aliveEnemy = aliveEnemy;
         tree.RLways = true;
@@ -804,19 +767,19 @@ EnemyTree = function (index,game,x,y){
                 tree.animations.play('treeLeft');
                 tree.tint = 0xFFFFFF;
             }
-            if (tree.aliveEnemy==false){
+            if (tree.aliveEnemy===false){
                     tree.aliveEnemy=true;
                     game.particleDeath(tree);
                     tree.destroy();
             }
-            if(tree.hp==0){
+            if(tree.hp===0){
                 tree.aliveEnemy=false;
             }
-            if(tree.hitted==true){
+            if(tree.hitted===true){
                 tree.hp = tree.hp-damage;
                 tree.hitted=false;
                 tree.tint = 0x8000ff;
-                if(tree.RLways==true){
+                if(tree.RLways===true){
                     tree.x=tree.x-2;
                 }
                 else{
@@ -828,8 +791,8 @@ EnemyTree = function (index,game,x,y){
 
 EnemyBat = function (index,game,x,y){
 
-        var bat = manybats.create( x, y, 'enemyBat');
-        bat.hitted = hitted;
+    const bat = manybats.create(x, y, 'enemyBat');
+    bat.hitted = hitted;
         bat.hp = 200;
         bat.aliveEnemy = aliveEnemy;
         bat.RLways = true;
@@ -856,15 +819,15 @@ EnemyBat = function (index,game,x,y){
                 bat.RLways = false;
                 bat.animations.play('batLeft');bat.tint = 0xFFFFFF;
             }
-            if (bat.aliveEnemy==false){
+            if (bat.aliveEnemy===false){
                     bat.aliveEnemy=true;
                     game.particleDeath(bat);
                     bat.destroy();
             }  
-            if(bat.hp==0){
+            if(bat.hp===0){
                 bat.aliveEnemy=false;
             }
-            if(bat.hitted==true){
+            if(bat.hitted===true){
                 bat.hp = bat.hp-damage;
                 bat.hitted=false;
                 bat.tint = 0xff0000;             
@@ -872,16 +835,18 @@ EnemyBat = function (index,game,x,y){
 
         }
     };
-var textS = '     ?';
-var textS1 = 'Hello bad-man!';
-var textS2 = "Oh-oh, i'm sorry you just look very rich! Came on the hunt?";
-var textS3 = 'What about those ugly guys? Are you afraid of them?';
-var textS4 = 'I think you can handle them. Do it!';
-var textS5 = 'Okey, see you next time!';
-var endPlot = 0;  
+
+let textS = '     ?';
+const textS1 = 'Hello bad-man!';
+const textS2 = "Oh-oh, i'm sorry you just look very rich! Came on the hunt?";
+const textS3 = 'What about those ugly guys? Are you afraid of them?';
+const textS4 = 'I think you can handle them. Do it!';
+const textS5 = 'Okey, see you next time!';
+let endPlot = 0;
+
 Plot = function (game,x,y,plotSprite){
 
-    var plot = game.add.sprite(x, y, plotSprite);
+    const plot = game.add.sprite(x, y, plotSprite);
     plot.xBorn = x;
     plot.yBorn = y;
     plot.enableBody = true;
@@ -891,14 +856,14 @@ Plot = function (game,x,y,plotSprite){
     plot.body.immovable = true;
     plot.body.collideWorldBounds = true;
     plot.body.allowGravity = false;
-    var speakButton = game.input.keyboard.addKey(Phaser.KeyCode.S);
-    speakButton.onDown.add(rescenario);
+    const speakButton = game.input.keyboard.addKey(Phaser.KeyCode.S);
+    speakButton.onDown.add(rebuildScript);
     scenarioText = game.add.text(plot.xBorn-10, plot.yBorn-20, textS , { font: '16px Arial', fill: "#9802d4" });
     scenarioText.fontWeight = 'bold';
     plot.update = function(){
         plot.animations.play('plotUsual');
         game.physics.arcade.overlap(plot, player, plot.scenario, null, game);   
-        if(endPlot==6){
+        if(endPlot===6){
             scenarioText.destroy();
         }  
         if((!checkOverlap(player,plot)) && speakButton.isDown){
@@ -911,62 +876,62 @@ Plot = function (game,x,y,plotSprite){
     }
 };
 
-function rescenario(){
+function rebuildScript() {
 
-        endPlot++;
-        if(endPlot==1){
-            textS = textS1;
-        }
-        if(endPlot==2){
-            textS = textS2;
-        }
-        if(endPlot==3){
-            textS = textS3;
-        }
-        if(endPlot==4){
-            textS = textS4;
-        }
-        if(endPlot==5){
-            textS = textS5;
-        }
-    };
+    endPlot++;
+    if (endPlot === 1) {
+        textS = textS1;
+    }
+    if (endPlot === 2) {
+        textS = textS2;
+    }
+    if (endPlot === 3) {
+        textS = textS3;
+    }
+    if (endPlot === 4) {
+        textS = textS4;
+    }
+    if (endPlot === 5) {
+        textS = textS5;
+    }
+}
 function Level2(){
         this.state.start('Level2');
-    };
+    }
 function reviveSword(){
         sword.revive();
 
-    };
-function reviveNinjis(game){
+    }
+function reviveNinjas(game){
         ninjis.removeAll();
         game.createNinjis(game);
-    };
+    }
 function reviveTrees(game){
         trees.removeAll();
         game.createTrees(game);
-    };
+    }
 function reviveBats(game){
         manybats.removeAll();
         game.createBats(game);
-    };
+    }
 function reviveTotems(game){
         totems.removeAll();
         game.createTotems(game);
-    };
+    }
 function reviveLezo(game){
         lezos.removeAll();
         game.createLezo(game);
-    };
+    }
 
 function collisionHandlerSword(sword,enemy) {
         enemy.hitted = true;
         
-    };
+    }
 
 function checkOverlap(spriteA,spriteB){
-        var boundsA = spriteA.getBounds();
-        var boundsB = spriteB.getBounds();
+    const boundsA = spriteA.getBounds();
+    const boundsB = spriteB.getBounds();
 
-        return Phaser.Rectangle.intersects(boundsA,boundsB);
+    return Phaser.Rectangle.intersects(boundsA,boundsB);
 
-    };
+    }

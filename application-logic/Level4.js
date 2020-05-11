@@ -5,7 +5,7 @@ Game.Level4 = function(game){
 Game.Level4.prototype = {
 
 
-    preload: function(){
+    preload: function () {
 
         this.load.image('background3', 'assets/games/starstruck/Map3.png');
 
@@ -14,23 +14,22 @@ Game.Level4.prototype = {
 
         this.load.tilemap('level4', 'assets/games/starstruck/L4.json', null, Phaser.Tilemap.TILED_JSON);
 
-        this.load.image('ground3', 'assets/games/starstruck/Ground3.png');    
+        this.load.image('ground3', 'assets/games/starstruck/Ground3.png');
 
-        this.load.image('tiled3', 'assets/games/starstruck/tiled3.png');  
+        this.load.image('tiled3', 'assets/games/starstruck/tiled3.png');
 
 
     },
-      
-    create: function() {
 
-        // <Внешний мир>
+    create: function () {
+
 
         this.physics.startSystem(Phaser.Physics.ARCADE);
 
         this.stage.backgroundColor = '#000000';
 
         bg = this.add.tileSprite(0, 0, 1600, 1200, 'background3');
-        bg.scale.setTo(0.5,0.5);
+        bg.scale.setTo(0.5, 0.5);
         bg.fixedToCamera = true;
 
         map = this.add.tilemap('level4');
@@ -49,52 +48,43 @@ Game.Level4.prototype = {
         layer.resizeWorld();
 
         this.physics.arcade.gravity.y = 250;
-        //<Emmiter>
         emitter = this.add.emitter(0, 0, 200);
 
         emitter.makeParticles('chunk');
-        emitter.minParticleScale =0.1;
-        emitter.maxParticleScale =1.5;
+        emitter.minParticleScale = 0.1;
+        emitter.maxParticleScale = 1.5;
         emitter.minRotation = 0;
         emitter.maxRotation = 0;
         emitter.gravity = 150;
         emitter.bounce.setTo(0.5, 0.5);
 
-        //</Emmiter>
-        //<Emmiter>
         emitterDeath1 = this.add.emitter(0, 0, 400);
 
         emitterDeath1.makeParticles('chunkDeath1');
-        emitterDeath1.minParticleScale =0.09;
-        emitterDeath1.maxParticleScale =2;
+        emitterDeath1.minParticleScale = 0.09;
+        emitterDeath1.maxParticleScale = 2;
         emitterDeath1.minRotation = 0;
         emitterDeath1.maxRotation = 360;
 
         emitterDeath2 = this.add.emitter(0, 0, 200);
 
         emitterDeath2.makeParticles('chunkDeath2');
-        emitterDeath2.minParticleScale =0.09;
-        emitterDeath2.maxParticleScale =2;
+        emitterDeath2.minParticleScale = 0.09;
+        emitterDeath2.maxParticleScale = 2;
         emitterDeath2.minRotation = 0;
         emitterDeath2.maxRotation = 360;
-      
-        //</Emmiter>
-
-        // </Внешний мир>
 
         var sword1 = new Sword(this, xCoordinateComeback, yCoordinateComeback);
 
         checkPointers = this.add.group();
 
-        //new CheckPointer(1, this, 640, 310);
-        //new CheckPointer(2, this, 2070, 340);
         new Ends(this, 1530, 106, Level5);
 
         xCoordinateComeback = 375; //254
         yCoordinateComeback = 688; //102
 
         player1 = new Player(this, xCoordinateComeback, yCoordinateComeback);
-        
+
 
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -113,11 +103,11 @@ Game.Level4.prototype = {
         jumpers = this.add.group();
         this.createJumper(this);
 
-        golds = this.add.group();;
+        golds = this.add.group();
 
         //  The score
         scoreString = 'Score : ';
-        scoreText = this.add.text(10, 10, scoreString + player.points, { font: '44px Arial', fill: "#9802d4" });
+        scoreText = this.add.text(10, 10, scoreString + player.points, {font: '44px Arial', fill: "#9802d4"});
         scoreText.fixedToCamera = true;
         scoreText.fontWeight = 'bold';
 
@@ -125,7 +115,7 @@ Game.Level4.prototype = {
         activateButton = this.input.keyboard.addKey(Phaser.KeyCode.E);
     },
 
-    update: function() {
+    update: function () {
 
         this.physics.arcade.collide(player, layer);
 
@@ -141,22 +131,22 @@ Game.Level4.prototype = {
 
 
         //<Оружие>
-        if (attackState == true){
+        if (attackState == true) {
 
             this.physics.arcade.overlap(sword, ninjis, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, trees,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, trees, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, manybats,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, manybats, collisionHandlerSword, null, this);
 
-            this.physics.arcade.overlap(sword, totems,  collisionHandlerSword, null, this);
+            this.physics.arcade.overlap(sword, totems, collisionHandlerSword, null, this);
 
             attackState = false;
 
         }
 
         //<Оружие>
-        
+
         // Коллизии
 
         this.physics.arcade.overlap(trees, player, this.resetPlayer, null, this);
@@ -167,19 +157,19 @@ Game.Level4.prototype = {
 
         this.physics.arcade.overlap(player, checkPointers, this.checkPointerActivate, null, this);
 
-        this.physics.arcade.overlap(lezos, player, this.resetPlayer, null, this);     
-        
+        this.physics.arcade.overlap(lezos, player, this.resetPlayer, null, this);
+
         //\Коллизии 
 
-        scoreText.setText(scoreString+player.points);
+        scoreText.setText(scoreString + player.points);
     },
 
-    render: function(){
+    render: function () {
 
         this.debug.inputInfo(32, 32);
 
     },
-    checkPointerActivate: function(player, checkPointer){
+    checkPointerActivate: function (player, checkPointer) {
 
         xCoordinateComeback = checkPointer.xBorn;
         yCoordinateComeback = checkPointer.yBorn;
@@ -187,14 +177,14 @@ Game.Level4.prototype = {
 
     },
 
-    particleBurst: function() {
+    particleBurst: function () {
 
         emitter.x = sword.x;
         emitter.y = sword.y;
         emitter.start(true, 1000, null, 1);
 
     },
-    particleDeath: function(enemy) {
+    particleDeath: function (enemy) {
 
         emitterDeath2.x = enemy.x;
         emitterDeath2.y = enemy.y;
@@ -203,7 +193,7 @@ Game.Level4.prototype = {
         emitterDeath2.start(true, 2000, null, 5);
         emitterDeath1.start(true, 2000, null, 5);
 
-        new Gold(this,enemy.x,enemy.y);
+        new Gold(this, enemy.x, enemy.y);
         enemy.kill();
     },
 
@@ -211,13 +201,13 @@ Game.Level4.prototype = {
         this.camera.flash(0xff0000, 500);
     },
 
-    resetPlayer: function(player,  ninjis){
+    resetPlayer: function (player, ninjis) {
         this.flash();
         player.points = 0;
         sword.reset(xCoordinateComeback, yCoordinateComeback);
         player.reset(xCoordinateComeback, yCoordinateComeback);
         reviveSword();
-        reviveNinjis(this);
+        reviveNinjas(this);
         reviveTrees(this);
         reviveBats(this);
         reviveTotems(this);
@@ -228,9 +218,9 @@ Game.Level4.prototype = {
         // this.debug.body(player);
         // this.debug.bodyInfo(player, 16, 24);
 
-        },
+    },
     createNinjis: function () {
-    new EnemyNinja(0, this, 992, 107, 120,2000); 
+        new EnemyNinja(0, this, 992, 107, 120, 2000);
     },
     createTrees: function () {
     },
@@ -239,61 +229,61 @@ Game.Level4.prototype = {
     },
 
     createTotems: function () {
-    new EnemyTotem(1, this, 96, 556);
-    new EnemyTotem(0, this, 1310, 76); 
+        new EnemyTotem(1, this, 96, 556);
+        new EnemyTotem(0, this, 1310, 76);
     },
 
     createLezo: function () {
 
-    new Lezo(0, this, 225, 586);
-    new Lezo(0, this, 225, 556);
-    new Lezo(0, this, 225, 526);
-    new Lezo(0, this, 225, 496);
+        new Lezo(0, this, 225, 586);
+        new Lezo(0, this, 225, 556);
+        new Lezo(0, this, 225, 526);
+        new Lezo(0, this, 225, 496);
 
-    new Lezo(1, this, 325, 768);
-    new Lezo(1, this, 285, 768);
-    new Lezo(1, this, 245, 768);
-    
-    
-    new Lezo(2, this, 50, 290);
-    new Lezo(2, this, 50, 250);
-    new Lezo(2, this, 175, 360);
-    new Lezo(2, this, 185, 140);
-    new Lezo(2, this, 50, 140);
+        new Lezo(1, this, 325, 768);
+        new Lezo(1, this, 285, 768);
+        new Lezo(1, this, 245, 768);
 
-    new Lezo(3, this, 750, 260);
-    new Lezo(3, this, 620, 230); 
-    new Lezo(3, this, 610, 480);
-    new Lezo(3, this, 670, 660);
 
-    new Lezo(4, this, 576, 768);
-    new Lezo(4, this, 616, 768);
-    new Lezo(4, this, 656, 768);
-    new Lezo(4, this, 696, 768);
-    new Lezo(4, this, 736, 768);
+        new Lezo(2, this, 50, 290);
+        new Lezo(2, this, 50, 250);
+        new Lezo(2, this, 175, 360);
+        new Lezo(2, this, 185, 140);
+        new Lezo(2, this, 50, 140);
 
-    new Lezo(5, this, 864, 768);
-    new Lezo(5, this, 904, 768);
-    new Lezo(5, this, 944, 768);
+        new Lezo(3, this, 750, 260);
+        new Lezo(3, this, 620, 230);
+        new Lezo(3, this, 610, 480);
+        new Lezo(3, this, 670, 660);
 
-    new Lezo(6, this, 1150, 176);
-    new Lezo(6, this, 1250, 176);
-    new Lezo(6, this, 1350, 176);
-    new Lezo(6, this, 1450, 176);
+        new Lezo(4, this, 576, 768);
+        new Lezo(4, this, 616, 768);
+        new Lezo(4, this, 656, 768);
+        new Lezo(4, this, 696, 768);
+        new Lezo(4, this, 736, 768);
+
+        new Lezo(5, this, 864, 768);
+        new Lezo(5, this, 904, 768);
+        new Lezo(5, this, 944, 768);
+
+        new Lezo(6, this, 1150, 176);
+        new Lezo(6, this, 1250, 176);
+        new Lezo(6, this, 1350, 176);
+        new Lezo(6, this, 1450, 176);
 
     },
 
     createJumper: function () {
 
-    new Jumper(0, this, 325, 580);
-    new Jumper(1, this, 60, 430);
-    new Jumper(1, this, 165, 230);
-    new Jumper(2, this, 950, 640);
-    new Jumper(2, this, 890, 440);
-    new Jumper(2, this, 930, 240);
-    
+        new Jumper(0, this, 325, 580);
+        new Jumper(1, this, 60, 430);
+        new Jumper(1, this, 165, 230);
+        new Jumper(2, this, 950, 640);
+        new Jumper(2, this, 890, 440);
+        new Jumper(2, this, 930, 240);
+
     }
 };
-function Level5(){
-        this.state.start('Level5');
-    };
+function Level5() {
+    this.state.start('Level5');
+}
